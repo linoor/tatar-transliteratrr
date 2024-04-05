@@ -17,7 +17,9 @@ const mapping: { [key: string]: { [key: string]: { [key: string]: { [key: string
                 'т': 't', 'у': 'u', 'ү': 'ü',
                 'в': 'v', 'х': 'x', 'й': 'y',
                 'з': 'z', 'ь': "'", 'я': 'ya',
-                'е': 'e', 'Е': 'e',
+                'е': 'e', 'Е': 'e', 'c': 's',
+                // for russian loanwords below
+                'ц': 'ts', 'щ': 'şç'
             },
             "before_back_vowel": {
                 "к": "q", "г": "ğ"
