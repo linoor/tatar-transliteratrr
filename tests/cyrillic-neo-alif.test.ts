@@ -40,7 +40,6 @@ describe('cyrillic-neo-alif', () => {
         expect(translate('гэ')).toBe('ge')
     }),
     test('correctly parse "e" after consonants', () => {
-    // consonant_lowercase = "б" | "в" | "д" | "ж" | "г" | "з" | "й" | "к" | "л" | "м" | "н" | "ң" | "п" | "р" | "с" | "т" | "ф" | "х" | "һ" | "ч" | "ш" | "җ" | "ц" | "щ" | "я" 
         expect(translate('ке')).toBe('ke')
         expect(translate('ге')).toBe('ge')
         expect(translate('де')).toBe('de')
@@ -63,5 +62,20 @@ describe('cyrillic-neo-alif', () => {
         expect(translate('җе')).toBe('ce')
         expect(translate('це')).toBe('tse')
         expect(translate('ще')).toBe('şçe')
+    })
+    test('correctly parse "e" after back vowels', () => {
+        expect(translate('га')).toBe('ğa') // russian a
+        expect(translate('гa')).toBe('ğa') // latin a
+        expect(translate('го')).toBe('ğo')
+        expect(translate('гу')).toBe('ğu') // russian y
+        expect(translate('гy')).toBe('ğu') // latin y
+        expect(translate('ги')).toBe('ği')
+        expect(translate('гы')).toBe('ğı')
+        expect(translate('гый')).toBe('ğıy')
+    })
+
+    test('correctly parse "ё" in russian loanwords', () => {
+        expect(translate('гё')).toBe('ğyo') // russian г
+        expect(translate('гё')).toBe('ğyo') // latin г
     })
 })

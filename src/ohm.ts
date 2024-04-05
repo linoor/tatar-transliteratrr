@@ -19,7 +19,7 @@ const mapping: { [key: string]: { [key: string]: { [key: string]: { [key: string
                 'з': 'z', 'ь': "'", 'я': 'ya',
                 'е': 'e', 'Е': 'e', 'c': 's',
                 // for russian loanwords below
-                'ц': 'ts', 'щ': 'şç'
+                'ц': 'ts', 'щ': 'şç', "ё": "yo"
             },
             "before_back_vowel": {
                 "к": "q", "г": "ğ"
@@ -35,15 +35,15 @@ const grammar = ohm.grammar(`Cyrillic {
     cyrillic_letter = (consonant | front_vowel | back_vowel)
     syllable = g_front_vowel | g_back_vowel | k_front_vowel | k_back_vowel
 
-    g_front_vowel = ("г" | "Г")  &front_vowel
-    g_back_vowel = ("г" | "Г")  &back_vowel
+    g_front_vowel = ("г" | "Г")  &(front_vowel)
+    g_back_vowel = ("г" | "Г")  &(back_vowel | "ё")
 
     k_front_vowel = ("к" | "К")  &front_vowel
     k_back_vowel = ("к" | "К")  &back_vowel
 
     consonant = consonant_lowercase | consonant_uppercase
-    consonant_lowercase = "б" | "в" | "д" | "ж" | "г" | "з" | "й" | "к" | "л" | "м" | "н" | "ң" | "п" | "р" | "с" | "т" | "ф" | "х" | "һ" | "ч" | "ш" | "җ" | "ц" | "щ" | "я" 
-    consonant_uppercase = "Б" | "В" | "Д" | "Ж" | "Г" | "З" | "Й" | "К" | "Л" | "М" | "Н" | "Ң" | "П" | "Р" | "С" | "Т" | "Ф" | "Х" | "Һ" | "Ч" | "Ш" | "Җ" | "Ц" | "Щ" | "Я"
+    consonant_lowercase = "б" | "в" | "д" | "ж" | "г" | "з" | "й" | "к" | "л" | "м" | "н" | "ң" | "п" | "р" | "с" | "т" | "ф" | "х" | "һ" | "ч" | "ш" | "җ" | "ц" | "щ" | "я" | "ё" 
+    consonant_uppercase = "Б" | "В" | "Д" | "Ж" | "Г" | "З" | "Й" | "К" | "Л" | "М" | "Н" | "Ң" | "П" | "Р" | "С" | "Т" | "Ф" | "Х" | "Һ" | "Ч" | "Ш" | "Җ" | "Ц" | "Щ" | "Я" | "Ё"
 
     front_vowel = front_vowel_lower | front_vowel_upper
     front_vowel_lower = "ә" | "ө" | "ү" | "е" | "e" | "э"
