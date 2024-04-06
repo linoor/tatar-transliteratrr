@@ -15,7 +15,7 @@ const mapping: { [key: string]: { [key: string]: { [key: string]: { [key: string
                 'о': 'o', 'ө': 'ö', 'п': 'p',
                 'р': 'r', 'с': 's', 'ш': 'ş',
                 'т': 't', 'у': 'u', 'ү': 'ü',
-                'в': 'v', 'х': 'x', 'й': 'y',
+                'в': 'w', 'х': 'x', 'й': 'y',
                 'з': 'z', 'ь': "'", 'я': 'ya',
                 'е': 'e', 'Е': 'e', 'c': 's',
                 // for russian loanwords below

@@ -78,4 +78,9 @@ describe('cyrillic-neo-alif', () => {
         expect(translate('гё')).toBe('ğyo') // russian г
         expect(translate('гё')).toBe('ğyo') // latin г
     })
+
+    test('correctly parse "в"', () => {
+        expect(translate('вакытында')).toBe('waqıtında')
+        // expect(translate('видео')).toBe('video')
+    })
 })
