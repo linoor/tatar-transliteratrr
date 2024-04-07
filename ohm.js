@@ -44,12 +44,12 @@ const grammar = ohm.grammar(`Cyrillic {
     consonant_uppercase = "Б" | "В" | "Д" | "Ж" | "Г" | "З" | "Й" | "К" | "Л" | "М" | "Н" | "Ң" | "П" | "Р" | "С" | "Т" | "Ф" | "Х" | "Һ" | "Ч" | "Ш" | "Җ" | "Ц" | "Щ" | "Я" | "Ё"
 
     front_vowel = front_vowel_lower | front_vowel_upper
-    front_vowel_lower = "ә" | "ө" | "ү" | "е" | "e" | "э"
-    front_vowel_upper = "Ә" | "Ө" | "Ү" | "Е" | "E" | "Э"
+    front_vowel_lower = "ә" | "ө" | "ү" | "е" | "e" | "э" | "и"
+    front_vowel_upper = "Ә" | "Ө" | "Ү" | "Е" | "E" | "Э" | "И"
 
     back_vowel = back_vowel_lower | back_vowel_upper
-    back_vowel_lower = "а" | "a" | "о" | "o" | "у" | "y" | "ы" | "и" | "ый"
-    back_vowel_upper = "А" | "A" | "О" | "O" | "У" | "Y" | "Ы" | "И" | "ЫЙ"
+    back_vowel_lower = "а" | "a" | "о" | "o" | "у" | "y" | "ы"
+    back_vowel_upper = "А" | "A" | "О" | "O" | "У" | "Y" | "Ы"
 }`);
 const semantics = grammar.createSemantics().addOperation('translate', {
     _terminal() {
