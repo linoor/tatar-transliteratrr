@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
     inputArea.addEventListener('input', () => {
         const inputText = inputArea.value;
 
-        outputArea.value = translate(inputText);
-    });
+        outputArea.value = translate("Cyrillic", "NeoAlif", inputText);
+    })
+    outputArea.addEventListener('input', () => {
+        const outputText = outputArea.value;
+
+        inputArea.value = translate("NeoAlif", "Cyrillic", outputText);
+    })
 });
