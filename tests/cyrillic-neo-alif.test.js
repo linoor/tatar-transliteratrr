@@ -1,5 +1,6 @@
 "use strict";
 import { translate } from "../src/ohm";
+
 describe('cyrillic-neo-alif', () => {
     test('correctly parse к in back vowels', () => {
         expect(translate('ка')).toBe('qa'); // russian a

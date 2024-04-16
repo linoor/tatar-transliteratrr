@@ -28,6 +28,9 @@ const mapping = {
             "before_front_vowel": {
                 "к": "k", "г": "g"
             },
+            "at_end_of_a_word": {
+                "к": "q"
+            }
         }
     },
     'NeoAlif': {
@@ -56,13 +59,18 @@ const mapping = {
     }
 };
 const grammar_cyrillic = ohm.grammar(`Cyrillic {
-    input = (syllable | cyrillic_letter | any)*
+    input = (syllable
+            | k_at_end_of_word
+            | cyrillic_letter
+            | any)*
+            
     cyrillic_letter = (consonant | front_vowel | back_vowel)
     syllable = g_front_vowel | g_back_vowel | k_front_vowel | k_back_vowel
 
     g_front_vowel = ("г" | "Г")  &(front_vowel)
     g_back_vowel = ("г" | "Г")  &(back_vowel | "ё")
 
+    k_at_end_of_word = ("к" | "К") ~alnum
     k_front_vowel = ("к" | "К")  &front_vowel
     k_back_vowel = ("к" | "К")  &back_vowel
 
@@ -99,6 +107,9 @@ const semantics_cyrillic = grammar_cyrillic.createSemantics().addOperation('tran
         },
         k_front_vowel(syllable, _vowel) {
             return getEquivalent(syllable.sourceString, from, to, "before_front_vowel");
+        },
+        k_at_end_of_word(ps) {
+            return getEquivalent(ps.sourceString, from, to, "at_end_of_a_word");
         },
         cyrillic_letter(ps) {
             return ps.children.map(c => getEquivalent(c.sourceString, Cyrillic, NeoAlif)).join('');
