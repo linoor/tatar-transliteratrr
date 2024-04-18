@@ -77,4 +77,8 @@ describe('cyrillic-neo-alif', () => {
     test('correctly parse "sigezayaq"', () => {
         expect(translate(from, to, 'сигезаяк')).toBe('sigezayaq')
     })
+
+    test('correctly parse "yu"', () => {
+        expect(translate(from, to, 'ю')).toBe('yu')
+    })
 })
