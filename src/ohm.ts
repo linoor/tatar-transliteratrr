@@ -57,7 +57,7 @@ const mapping: { [key: Alphabet]: { [key: Alphabet]: { [key: Rule]: { [key: Lett
                 "ğ": "г", "ts": "ц", "şç": "щ",
             }, 
             "syllable": {
-                'ya': 'я'
+                'ya': 'я', 'yu': 'ю'
             },
             "e_beginning": {
                 'e': 'э'
@@ -159,7 +159,7 @@ const grammar_latin = ohm.grammar(`Latin {
     input = (syllable | e_beginning | latin_letter | any)*
     latin_letter = letter | "ә"
     e_beginning = space "e"
-    syllable = ("ya")
+    syllable = ("ya" | "yu")
 }`)
 const semantics_latin = grammar_latin.createSemantics().addOperation('translate', (() => {
     const from = NeoAlif
