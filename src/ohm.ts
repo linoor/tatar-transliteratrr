@@ -3,6 +3,7 @@ import * as ohm from 'ohm-js';
 
 const Cyrillic = 'Cyrillic';
 const NeoAlif = 'NeoAlif';
+const Janalif = 'Janalif';
 type Alphabet = string
 type Rule = string
 type Letter = string
@@ -144,14 +145,37 @@ function getGrammar(from: Alphabet, to: Alphabet): [ohm.Grammar, ohm.Semantics] 
     }
 }
 
+function neoAlifToJanalif(text: string): string {
+    return text
+        .split("ə").join("ä")
+        .split("Ə").join("Ä")
+        .split("w").join("v")
+        .split("W").join("V");
+}
 
-export function translate(from: Alphabet, to: Alphabet, text: string) {
+function janalifToNeoAlif(text: string): string {
+    return text
+        .split("ä").join("ə")
+        .split("Ä").join("Ə")
+        .split("v").join("w")
+        .split("V").join("W");
+}
+
+
+export function translate(from: Alphabet, to: Alphabet, text: string): string {
+    if (from === Cyrillic && to === Janalif) {
+        return neoAlifToJanalif(translate(Cyrillic, NeoAlif, text));
+    }
+    if (from === Janalif && to === Cyrillic) {
+        return translate(NeoAlif, Cyrillic, janalifToNeoAlif(text));
+    }
+
     const [grammar, semantics] = getGrammar(from, to)
     const match = grammar.match(text)
     if (match.succeeded()) {
         return semantics(match).translate();
     } else {
-        return match.message
+        return match.message || "Invalid input"
     }
 }
 
