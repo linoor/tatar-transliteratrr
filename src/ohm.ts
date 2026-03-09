@@ -26,6 +26,7 @@ const mapping: { [key: Alphabet]: { [key: Alphabet]: { [key: Rule]: { [key: Lett
                 'т': 't', 'у': 'u', 'ү': 'ü',
                 'в': 'w', 'х': 'x', 'й': 'y',
                 'з': 'z', 'ь': "'", 'я': 'ya',
+                'ъ': "'",
                 'е': 'e', 'Е': 'e', 'c': 's',
                 // for russian loanwords below
                 'ц': 'ts', 'щ': 'şç', "ё": "yo",
@@ -55,6 +56,7 @@ const mapping: { [key: Alphabet]: { [key: Alphabet]: { [key: Rule]: { [key: Lett
                 'y': 'й', 'p': 'п', 'r': 'р',
                 'q': 'к', 't': 'т', 'u': 'у',
                 'z': 'з', 'w': 'в', 'x': 'х',
+                "'": "ь",
                 "ü": "ү", "yo": "ё", 'ş': 'ш',
                 "ğ": "г", "ts": "ц", "şç": "щ",
             }, 
@@ -84,8 +86,8 @@ const grammar_cyrillic = ohm.grammar(`Cyrillic {
     k_back_vowel = ("к" | "К")  &back_vowel
 
     consonant = consonant_lowercase | consonant_uppercase
-    consonant_lowercase = "б" | "в" | "д" | "ж" | "г" | "з" | "й" | "к" | "л" | "м" | "н" | "ң" | "п" | "р" | "с" | "т" | "ф" | "х" | "һ" | "ч" | "ш" | "җ" | "ц" | "щ" | "я" | "ё" | "ю"
-    consonant_uppercase = "Б" | "В" | "Д" | "Ж" | "Г" | "З" | "Й" | "К" | "Л" | "М" | "Н" | "Ң" | "П" | "Р" | "С" | "Т" | "Ф" | "Х" | "Һ" | "Ч" | "Ш" | "Җ" | "Ц" | "Щ" | "Я" | "Ё" | "Ю"
+    consonant_lowercase = "б" | "в" | "д" | "ж" | "г" | "з" | "й" | "к" | "л" | "м" | "н" | "ң" | "п" | "р" | "с" | "т" | "ф" | "х" | "һ" | "ч" | "ш" | "җ" | "ц" | "щ" | "ь" | "ъ" | "я" | "ё" | "ю"
+    consonant_uppercase = "Б" | "В" | "Д" | "Ж" | "Г" | "З" | "Й" | "К" | "Л" | "М" | "Н" | "Ң" | "П" | "Р" | "С" | "Т" | "Ф" | "Х" | "Һ" | "Ч" | "Ш" | "Җ" | "Ц" | "Щ" | "Ь" | "Ъ" | "Я" | "Ё" | "Ю"
 
     front_vowel = front_vowel_lower | front_vowel_upper
     front_vowel_lower = "ә" | "ө" | "ү" | "е" | "e" | "э" | "и"
@@ -130,8 +132,9 @@ const semantics_cyrillic = grammar_cyrillic.createSemantics().addOperation('tran
 
 function getEquivalent(c: string, from: string, to: string, rule = "default"): string {
     const equivalent = mapping[from][to][rule][c.toLowerCase()] || '?';
+    const isCasedLetter = c.toLowerCase() !== c.toUpperCase();
 
-    return c === c.toUpperCase() ?
+    return isCasedLetter && c === c.toUpperCase() ?
         equivalent.toUpperCase() :
         equivalent;
 }
@@ -226,7 +229,7 @@ export function translate(from: Alphabet, to: Alphabet, text: string): string {
 
 const grammar_latin = ohm.grammar(`Latin {
     input = (syllable | e_beginning | latin_letter | any)*
-    latin_letter = letter | "ә"
+    latin_letter = letter | "ә" | "'"
     e_beginning = space "e"
     syllable = ("ya" | "yu")
 }`)
