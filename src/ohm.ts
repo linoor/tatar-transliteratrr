@@ -4,6 +4,7 @@ import * as ohm from 'ohm-js';
 const Cyrillic = 'Cyrillic';
 const NeoAlif = 'NeoAlif';
 const Janalif = 'Janalif';
+const ZamanAlif = 'ZamanAlif';
 type Alphabet = string
 type Rule = string
 type Letter = string
@@ -146,19 +147,57 @@ function getGrammar(from: Alphabet, to: Alphabet): [ohm.Grammar, ohm.Semantics] 
 }
 
 function neoAlifToJanalif(text: string): string {
-    return text
-        .split("ə").join("ä")
-        .split("Ə").join("Ä")
-        .split("w").join("v")
-        .split("W").join("V");
+    const map: Record<string, string> = {
+        "c": "ç",
+        "ç": "c",
+        "ğ": "ƣ",
+        "j": "ƶ",
+        "ñ": "ꞑ",
+        "ü": "y",
+        "y": "j",
+        "C": "Ç",
+        "Ç": "C",
+        "Ğ": "Ƣ",
+        "J": "Ƶ",
+        "Ñ": "Ꞑ",
+        "Ü": "Y",
+        "Y": "J",
+    };
+
+    return text.replace(/[cçğjñüyCÇĞJÑÜY]/g, (ch) => map[ch] || ch);
 }
 
 function janalifToNeoAlif(text: string): string {
+    const map: Record<string, string> = {
+        "ç": "c",
+        "c": "ç",
+        "ƣ": "ğ",
+        "ƶ": "j",
+        "ꞑ": "ñ",
+        "y": "ü",
+        "j": "y",
+        "Ç": "C",
+        "C": "Ç",
+        "Ƣ": "Ğ",
+        "Ƶ": "J",
+        "Ꞑ": "Ñ",
+        "Y": "Ü",
+        "J": "Y",
+    };
+
+    return text.replace(/[çcƣƶꞑyjÇCƢƵꞐYJ]/g, (ch) => map[ch] || ch);
+}
+
+function neoAlifToZamanAlif(text: string): string {
+    return text
+        .split("ə").join("ä")
+        .split("Ə").join("Ä");
+}
+
+function zamanAlifToNeoAlif(text: string): string {
     return text
         .split("ä").join("ə")
-        .split("Ä").join("Ə")
-        .split("v").join("w")
-        .split("V").join("W");
+        .split("Ä").join("Ə");
 }
 
 
@@ -168,6 +207,12 @@ export function translate(from: Alphabet, to: Alphabet, text: string): string {
     }
     if (from === Janalif && to === Cyrillic) {
         return translate(NeoAlif, Cyrillic, janalifToNeoAlif(text));
+    }
+    if (from === Cyrillic && to === ZamanAlif) {
+        return neoAlifToZamanAlif(translate(Cyrillic, NeoAlif, text));
+    }
+    if (from === ZamanAlif && to === Cyrillic) {
+        return translate(NeoAlif, Cyrillic, zamanAlifToNeoAlif(text));
     }
 
     const [grammar, semantics] = getGrammar(from, to)
