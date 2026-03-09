@@ -90,4 +90,11 @@ describe('from neo-alif to cyrillic', () => {
     test('correctly parse "yu"', () => {
         expect(translate(from, to, 'yu')).toBe('ю')
     })
+
+    test('correctly parse soft and hard sign apostrophes', () => {
+        expect(translate('Cyrillic', 'NeoAlif', 'ь')).toBe("'")
+        expect(translate('Cyrillic', 'NeoAlif', 'ъ')).toBe("'")
+        expect(translate(from, to, "'")).toBe('ь')
+        expect(translate(from, to, "’")).toBe('ь')
+    })
 })

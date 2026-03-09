@@ -139,6 +139,22 @@ function getEquivalent(c: string, from: string, to: string, rule = "default"): s
         equivalent;
 }
 
+function normalizeAlphabetName(alphabet: Alphabet): Alphabet {
+    const normalized = alphabet.trim().toLowerCase();
+    const aliases: Record<string, Alphabet> = {
+        cyrillic: Cyrillic,
+        "neoalif": NeoAlif,
+        "neo-əlif": NeoAlif,
+        "neo-elif": NeoAlif,
+        janalif: Janalif,
+        "jaꞑalif": Janalif,
+        "zamanalif": ZamanAlif,
+        "zamanälif": ZamanAlif,
+    };
+
+    return aliases[normalized] || alphabet;
+}
+
 function getGrammar(from: Alphabet, to: Alphabet): [ohm.Grammar, ohm.Semantics] {
     if (from === 'Cyrillic' && to === 'NeoAlif') {
         return [grammar_cyrillic, semantics_cyrillic]
@@ -203,19 +219,29 @@ function zamanAlifToNeoAlif(text: string): string {
         .split("Ä").join("Ə");
 }
 
+function normalizeLatinInput(text: string): string {
+    return text.replace(/[’ʼʻ`´]/g, "'");
+}
+
 
 export function translate(from: Alphabet, to: Alphabet, text: string): string {
+    from = normalizeAlphabetName(from);
+    to = normalizeAlphabetName(to);
+
     if (from === Cyrillic && to === Janalif) {
         return neoAlifToJanalif(translate(Cyrillic, NeoAlif, text));
     }
     if (from === Janalif && to === Cyrillic) {
-        return translate(NeoAlif, Cyrillic, janalifToNeoAlif(text));
+        return translate(NeoAlif, Cyrillic, janalifToNeoAlif(normalizeLatinInput(text)));
     }
     if (from === Cyrillic && to === ZamanAlif) {
         return neoAlifToZamanAlif(translate(Cyrillic, NeoAlif, text));
     }
     if (from === ZamanAlif && to === Cyrillic) {
-        return translate(NeoAlif, Cyrillic, zamanAlifToNeoAlif(text));
+        return translate(NeoAlif, Cyrillic, zamanAlifToNeoAlif(normalizeLatinInput(text)));
+    }
+    if (from === NeoAlif && to === Cyrillic) {
+        text = normalizeLatinInput(text);
     }
 
     const [grammar, semantics] = getGrammar(from, to)

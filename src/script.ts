@@ -9,10 +9,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectedLatinAlphabet = () => latinAlphabetSelect.value;
     const updatePlaceholders = () => {
         inputArea.placeholder = cyrillicPlaceholder;
-        outputArea.placeholder = translate("Cyrillic", selectedLatinAlphabet(), cyrillicPlaceholder);
+        try {
+            outputArea.placeholder = translate("Cyrillic", selectedLatinAlphabet(), cyrillicPlaceholder);
+        } catch (_error) {
+            outputArea.placeholder = '';
+        }
     };
     const updateOutputFromInput = () => {
-        outputArea.value = translate("Cyrillic", selectedLatinAlphabet(), inputArea.value);
+        try {
+            outputArea.value = translate("Cyrillic", selectedLatinAlphabet(), inputArea.value);
+        } catch (_error) {
+            outputArea.value = '';
+        }
     };
 
     updatePlaceholders();
@@ -25,7 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     outputArea.addEventListener('input', () => {
         const outputText = outputArea.value;
-
-        inputArea.value = translate(selectedLatinAlphabet(), "Cyrillic", outputText);
+        try {
+            inputArea.value = translate(selectedLatinAlphabet(), "Cyrillic", outputText);
+        } catch (_error) {
+            inputArea.value = '';
+        }
     })
 });

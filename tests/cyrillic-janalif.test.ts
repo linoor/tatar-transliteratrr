@@ -17,6 +17,8 @@ describe('cyrillic-janalif', () => {
         expect(translate(janalif, cyrillic, 'səlam')).toBe('сәлам')
         expect(translate(janalif, cyrillic, 'çiꞑy')).toBe('җиңү')
         expect(translate(janalif, cyrillic, 'ƶəj')).toBe('жәй')
+        expect(translate(janalif, cyrillic, "'")).toBe('ь')
+        expect(translate(janalif, cyrillic, "’")).toBe('ь')
     })
 
     test('preserves uppercase in Janalif conversion', () => {
